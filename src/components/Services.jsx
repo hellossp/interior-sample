@@ -57,7 +57,7 @@ export default function Services() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group relative w-full aspect-[0.9] xs:aspect-[1.05] sm:aspect-[1.45] md:aspect-[1.3] lg:aspect-[1.5] flex flex-col justify-between items-center text-center px-[15%] pt-[13%] pb-[18%] xs:px-[14%] xs:pt-[12%] xs:pb-[16%] sm:px-[13%] sm:pt-[11%] sm:pb-[15%] transition-all duration-500 hover:-translate-y-1 rounded-sm overflow-hidden bg-[#0f0a06]/45 backdrop-blur-[2.5px]"
+              className="group relative w-full aspect-[1.05] xs:aspect-[1.15] sm:aspect-[1.45] md:aspect-[1.3] lg:aspect-[1.5] flex flex-col justify-between items-center text-center px-[15%] pt-[14%] pb-[18%] xs:px-[14%] xs:pt-[13%] xs:pb-[17%] sm:px-[13%] sm:pt-[11%] sm:pb-[15%] transition-all duration-500 hover:-translate-y-1 rounded-sm overflow-hidden bg-[#0f0a06]/45 backdrop-blur-[2.5px]"
             >
               {/* Ornate Gold Frame Overlay on Top */}
               <div
@@ -75,14 +75,14 @@ export default function Services() {
                 <span className="text-[10px] xs:text-xs sm:text-sm font-light text-[#dfba6b] font-serif tracking-wider select-none block mb-1">
                   {service.num}
                 </span>
-                <h3 className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-serif text-[#fcfaf7] font-bold tracking-wide leading-tight mb-2">
+                <h3 className="text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-2xl font-serif text-[#fcfaf7] font-bold tracking-wide leading-tight mb-2">
                   {service.title}
                 </h3>
               </div>
 
               {/* Middle Content: Description */}
               <div className="w-full flex flex-col items-center my-auto py-1 sm:py-2 z-10">
-                <p className="text-[9px] xs:text-[10px] sm:text-xs md:text-sm text-zinc-200 font-sans font-light leading-relaxed max-w-md line-clamp-2 xs:line-clamp-3 sm:line-clamp-4 md:line-clamp-none">
+                <p className="text-xs xs:text-sm sm:text-sm md:text-sm text-zinc-200 font-sans font-light leading-relaxed max-w-md line-clamp-3 xs:line-clamp-4 sm:line-clamp-4 md:line-clamp-none">
                   {service.desc}
                 </p>
               </div>
@@ -90,7 +90,7 @@ export default function Services() {
               {/* Bottom Content: Divider and Tags */}
               <div className="w-full flex flex-col items-center z-10">
                 <div className="w-6 sm:w-12 h-[1px] bg-[#dfba6b]/40 mb-1.5 sm:mb-3" />
-                <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 sm:gap-x-4 sm:gap-y-2 text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-medium tracking-wider text-[#e5cfa3] uppercase font-sans">
+                <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 sm:gap-x-4 sm:gap-y-2 text-[9px] xs:text-xs sm:text-xs md:text-xs font-medium tracking-wider text-[#e5cfa3] uppercase font-sans">
                   {service.details.map((detail, idx) => (
                     <span key={idx} className="hover:text-white transition-colors duration-300">
                       {detail}
