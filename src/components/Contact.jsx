@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -12,183 +12,6 @@ export default function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // Scroll reveal door animation states and references
-  const [isFullyRevealed, setIsFullyRevealed] = useState(false);
-  const [shouldRenderCanvas, setShouldRenderCanvas] = useState(true);
-
-  const isFullyRevealedRef = useRef(false);
-  const canvasRef = useRef(null);
-  const containerRef = useRef(null);
-  const imagesRef = useRef([]);
-  const lastIndexRef = useRef(0);
-
-  // Cover image drawing helper
-  const drawCoverImage = (ctx, img, width, height) => {
-    ctx.clearRect(0, 0, width, height);
-
-    const imgWidth = img.naturalWidth || img.width;
-    const imgHeight = img.naturalHeight || img.height;
-    if (!imgWidth || !imgHeight) return;
-
-    const imgRatio = imgWidth / imgHeight;
-    const canvasRatio = width / height;
-
-    let drawWidth = width;
-    let drawHeight = height;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    if (canvasRatio > imgRatio) {
-      drawHeight = width / imgRatio;
-      offsetY = (height - drawHeight) / 2;
-    } else {
-      drawWidth = height * imgRatio;
-      offsetX = (width - drawWidth) / 2;
-    }
-
-    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-  };
-
-  const drawFrame = (index) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const images = imagesRef.current;
-    let img = images[index];
-
-    // Fallback logic to show the nearest loaded frame if the target frame isn't loaded yet
-    if (!img) {
-      for (let i = 1; i < 121; i++) {
-        const left = index - i;
-        const right = index + i;
-        if (left >= 0 && images[left]) {
-          img = images[left];
-          break;
-        }
-        if (right < 121 && images[right]) {
-          img = images[right];
-          break;
-        }
-      }
-    }
-
-    if (!img) return;
-
-    const rect = canvas.getBoundingClientRect();
-    if (canvas.width !== rect.width || canvas.height !== rect.height) {
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-
-    drawCoverImage(ctx, img, canvas.width, canvas.height);
-  };
-
-  // Preload frame images
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (imagesRef.current.length > 0) return; // Prevent duplicate execution in StrictMode
-
-    const totalFrames = 121;
-    const loadedImages = [];
-
-    // Prepopulate array
-    for (let i = 0; i < totalFrames; i++) {
-      loadedImages.push(null);
-    }
-
-    // Load first frame immediately for immediate visual coverage
-    const firstImg = new Image();
-    firstImg.src = "/heroimages/ezgif-frame-001.jpg";
-    firstImg.onload = () => {
-      loadedImages[0] = firstImg;
-      if (!isFullyRevealedRef.current) {
-        drawFrame(0);
-      }
-    };
-
-    // Preload remaining frames
-    for (let i = 2; i <= totalFrames; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(3, "0");
-      img.src = `/heroimages/ezgif-frame-${frameNum}.jpg`;
-      const index = i - 1;
-      img.onload = () => {
-        loadedImages[index] = img;
-        if (index === lastIndexRef.current && !isFullyRevealedRef.current) {
-          drawFrame(index);
-        }
-      };
-    }
-
-    imagesRef.current = loadedImages;
-  }, []);
-
-  // Listen to window resizing to keep the current frame properly scaled
-  useEffect(() => {
-    const handleResize = () => {
-      if (isFullyRevealedRef.current) return;
-      drawFrame(lastIndexRef.current);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Handle scroll events and map progress to door animation frames
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleScroll = () => {
-      if (isFullyRevealedRef.current) return;
-
-      const container = containerRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      // 0.0 progress = top of container enters the bottom of the viewport
-      // 1.0 progress = top of container is 15% from the top of the viewport
-      const startScroll = viewportHeight;
-      const endScroll = viewportHeight * 0.15;
-      const totalDistance = startScroll - endScroll;
-
-      if (totalDistance <= 0) return;
-
-      const currentDistance = startScroll - rect.top;
-      let progress = currentDistance / totalDistance;
-      progress = Math.max(0, Math.min(1, progress));
-
-      const frameIndex = Math.floor(progress * 120); // Scale to 0-120
-      lastIndexRef.current = frameIndex;
-
-      drawFrame(frameIndex);
-
-      // Lock once fully revealed (one-way reveal)
-      if (progress >= 1.0) {
-        setIsFullyRevealed(true);
-        isFullyRevealedRef.current = true;
-        window.removeEventListener("scroll", handleScroll);
-
-        // Unmount the canvas after the CSS fade-out finishes
-        setTimeout(() => {
-          setShouldRenderCanvas(false);
-        }, 1000);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    // Trigger initially in case it's already in view
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -303,9 +126,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right Column: Contact Form */}
           <div
-            ref={containerRef}
             style={{
               backgroundImage: "linear-gradient(rgba(45, 34, 25, 0.94), rgba(30, 22, 16, 0.97)), url('/wood_texture.png')",
               backgroundSize: "cover",
@@ -313,15 +134,6 @@ export default function Contact() {
             }}
             className="lg:col-span-7 bg-[#2d2219] border border-[#a88959]/35 p-8 md:p-12 relative overflow-hidden shadow-[0_8px_32px_0_rgba(26,20,15,0.3)]"
           >
-            {shouldRenderCanvas && (
-              <canvas
-                ref={canvasRef}
-                className={`absolute inset-0 w-full h-full z-20 transition-opacity duration-1000 ${isFullyRevealed
-                    ? "opacity-0 pointer-events-none"
-                    : "pointer-events-auto opacity-100"
-                  } hidden md:block`}
-              />
-            )}
             {submitted ? (
               <div
                 style={{
@@ -362,6 +174,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder=" "
+                  suppressHydrationWarning={true}
                   className="peer w-full bg-transparent border-b border-white/15 py-2.5 text-sm text-[#fcfaf7] focus:outline-none focus:border-[#a88959] transition-colors duration-300"
                 />
                 <label
@@ -382,6 +195,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder=" "
+                  suppressHydrationWarning={true}
                   className="peer w-full bg-transparent border-b border-white/15 py-2.5 text-sm text-[#fcfaf7] focus:outline-none focus:border-[#a88959] transition-colors duration-300"
                 />
                 <label
@@ -416,6 +230,7 @@ export default function Contact() {
                         value={type.id}
                         checked={formData.projectType === type.id}
                         onChange={handleChange}
+                        suppressHydrationWarning={true}
                         className="sr-only"
                       />
                       {type.label}
@@ -434,6 +249,7 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder=" "
+                  suppressHydrationWarning={true}
                   className="peer w-full bg-transparent border-b border-white/15 py-2.5 text-sm text-[#fcfaf7] resize-none focus:outline-none focus:border-[#a88959] transition-colors duration-300"
                 />
                 <label
@@ -448,6 +264,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
+                suppressHydrationWarning={true}
                 className="w-full bg-[#a88959] text-[#1a1714] hover:bg-gold hover:text-[#0b0c10] uppercase tracking-[0.25em] text-xs font-semibold py-4 flex items-center justify-center gap-2 disabled:opacity-50 transition-all duration-300"
               >
                 {loading ? (
