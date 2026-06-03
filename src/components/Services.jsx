@@ -1,4 +1,5 @@
 import React from "react";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
 export default function Services() {
   const services = [
@@ -36,69 +37,78 @@ export default function Services() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="max-w-3xl mb-16 md:mb-24">
-          <span 
-            className="text-xs uppercase tracking-[0.4em] text-[#a88959] font-mono mb-4 block font-semibold"
-            style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
-          >
-            Our Specialties
-          </span>
-          <h2 
-            className="text-3xl md:text-5xl font-light tracking-wide text-[#fcfaf7] font-serif leading-tight"
-            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
-          >
-            We translate architectural vision into physical emotions.
-          </h2>
-          <div className="w-16 h-[1px] bg-gold mt-6" />
-        </div>
+        <RevealOnScroll direction="up" duration={800}>
+          <div className="max-w-3xl mb-16 md:mb-24">
+            <span 
+              className="text-xs uppercase tracking-[0.4em] text-[#a88959] font-mono mb-4 block font-semibold"
+              style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
+            >
+              Our Specialties
+            </span>
+            <h2 
+              className="text-3xl md:text-5xl font-light tracking-wide text-[#fcfaf7] font-serif leading-tight"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
+            >
+              We translate architectural vision into physical emotions.
+            </h2>
+            <div className="w-16 h-[1px] bg-gold mt-6" />
+          </div>
+        </RevealOnScroll>
 
         {/* Specialties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="group relative w-full aspect-[1.05] xs:aspect-[1.15] sm:aspect-[1.45] md:aspect-[1.3] lg:aspect-[1.5] flex flex-col justify-between items-center text-center px-[15%] pt-[14%] pb-[18%] xs:px-[14%] xs:pt-[13%] xs:pb-[17%] sm:px-[13%] sm:pt-[11%] sm:pb-[15%] transition-all duration-500 hover:-translate-y-1 rounded-sm overflow-hidden bg-[#0f0a06]/45 backdrop-blur-[2.5px]"
+            <RevealOnScroll 
+              key={index} 
+              direction="up" 
+              delay={index * 150} 
+              duration={800}
+              className="w-full"
             >
-              {/* Ornate Gold Frame Overlay on Top */}
               <div
-                style={{
-                  backgroundImage: "url('/card-bg/77d1273a-a7aa-4f3b-a057-5c6413345f64.png')",
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat"
-                }}
-                className="absolute inset-0 pointer-events-none z-20 drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] group-hover:drop-shadow-[0_18px_35px_rgba(168,137,89,0.28)] transition-all duration-500"
-              />
+                className="group relative w-full aspect-[1.05] xs:aspect-[1.15] sm:aspect-[1.45] md:aspect-[1.3] lg:aspect-[1.5] flex flex-col justify-between items-center text-center px-[15%] pt-[14%] pb-[18%] xs:px-[14%] xs:pt-[13%] xs:pb-[17%] sm:px-[13%] sm:pt-[11%] sm:pb-[15%] transition-all duration-500 hover:-translate-y-1 rounded-sm overflow-hidden bg-[#0f0a06]/45 backdrop-blur-[2.5px]"
+              >
+                {/* Ornate Gold Frame Overlay on Top */}
+                <div
+                  style={{
+                    backgroundImage: "url('/card-bg/77d1273a-a7aa-4f3b-a057-5c6413345f64.png')",
+                    backgroundSize: "100% 100%",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                  }}
+                  className="absolute inset-0 pointer-events-none z-20 drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] group-hover:drop-shadow-[0_18px_35px_rgba(168,137,89,0.28)] transition-all duration-500"
+                />
 
-              {/* Top Content: Number and Title */}
-              <div className="w-full flex flex-col items-center z-10">
-                <span className="text-[10px] xs:text-xs sm:text-sm font-light text-[#dfba6b] font-serif tracking-wider select-none block mb-1">
-                  {service.num}
-                </span>
-                <h3 className="text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-2xl font-serif text-[#fcfaf7] font-bold tracking-wide leading-tight mb-2">
-                  {service.title}
-                </h3>
-              </div>
+                {/* Top Content: Number and Title */}
+                <div className="w-full flex flex-col items-center z-10">
+                  <span className="text-[10px] xs:text-xs sm:text-sm font-light text-[#dfba6b] font-serif tracking-wider select-none block mb-1">
+                    {service.num}
+                  </span>
+                  <h3 className="text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-2xl font-serif text-[#fcfaf7] font-bold tracking-wide leading-tight mb-2">
+                    {service.title}
+                  </h3>
+                </div>
 
-              {/* Middle Content: Description */}
-              <div className="w-full flex flex-col items-center my-auto py-1 sm:py-2 z-10">
-                <p className="text-xs xs:text-sm sm:text-sm md:text-sm text-zinc-200 font-sans font-light leading-relaxed max-w-md line-clamp-3 xs:line-clamp-4 sm:line-clamp-4 md:line-clamp-none">
-                  {service.desc}
-                </p>
-              </div>
+                {/* Middle Content: Description */}
+                <div className="w-full flex flex-col items-center my-auto py-1 sm:py-2 z-10">
+                  <p className="text-xs xs:text-sm sm:text-sm md:text-sm text-zinc-200 font-sans font-light leading-relaxed max-w-md line-clamp-3 xs:line-clamp-4 sm:line-clamp-4 md:line-clamp-none">
+                    {service.desc}
+                  </p>
+                </div>
 
-              {/* Bottom Content: Divider and Tags */}
-              <div className="w-full flex flex-col items-center z-10">
-                <div className="w-6 sm:w-12 h-[1px] bg-[#dfba6b]/40 mb-1.5 sm:mb-3" />
-                <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 sm:gap-x-4 sm:gap-y-2 text-[9px] xs:text-xs sm:text-xs md:text-xs font-medium tracking-wider text-[#e5cfa3] uppercase font-sans">
-                  {service.details.map((detail, idx) => (
-                    <span key={idx} className="hover:text-white transition-colors duration-300">
-                      {detail}
-                    </span>
-                  ))}
+                {/* Bottom Content: Divider and Tags */}
+                <div className="w-full flex flex-col items-center z-10">
+                  <div className="w-6 sm:w-12 h-[1px] bg-[#dfba6b]/40 mb-1.5 sm:mb-3" />
+                  <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 sm:gap-x-4 sm:gap-y-2 text-[9px] xs:text-xs sm:text-xs md:text-xs font-medium tracking-wider text-[#e5cfa3] uppercase font-sans">
+                    {service.details.map((detail, idx) => (
+                      <span key={idx} className="hover:text-white transition-colors duration-300">
+                        {detail}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>
